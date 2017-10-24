@@ -9,8 +9,11 @@ var app = express();
 var index = require('./routes/index');
 var users = require('./routes/users');
 const passportRouter = require("./routes/passportRouter");
+
 //mongoose configuration
+
 const mongoose = require("mongoose");
+require('./config/passport-config.js');
 mongoose.connect("mongodb://localhost/passport-local");
 //require the user model
 const User = require("./models/user");
@@ -25,13 +28,20 @@ const flash = require("connect-flash");
 
 
 //enable sessions here
-
+app.use(session(
+  {
+    secret: 'this needs to be different',
+    resave: true,
+    saveUninitialized: true
+  }
+));
 
 
 
 //initialize passport and session here
-
-
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
 
 
@@ -56,11 +66,18 @@ app.use('/', passportRouter);
 
 //passport code here
 
+app.use((req,res,next) => {
+    // if we are loggin in, create the "currentUser" variable for views
+    if(req.user){
+      res.locals.currentUser = req.user;
+    }
+    // otherwise, make "currentUser" blank
+    else {
+      res.locals.currentUser = null;
+    }
 
-
-
-
-
+    next ();
+});
 
 
 

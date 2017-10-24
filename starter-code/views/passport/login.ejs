@@ -1,0 +1,20 @@
+<h2> Login</h2>
+<form action="/login" method="post">
+
+  <%  if(logoutFeedback.length > 0) { %>
+      <p class="success-message"> <%= logoutFeedback %> </p>
+  <% } %>
+
+  <%  if(flashError.length > 0) { %>
+      <p class="error-message"> <%= flashError %> </p>
+  <% } %>
+
+  <label for="user-input"> Username </label>
+  <input  id="user-input" type="text" name="loginUser">
+  <br>
+  <label for="password-input"> Password</label>
+  <input id="password-input" type="password" name="loginPassword">
+  <br>
+
+  <button> Login </button>
+</form>
